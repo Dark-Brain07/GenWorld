@@ -1,0 +1,15 @@
+{
+  "network": "studionet",
+  "chain_id": 61999,
+  "contract_name": "GenWorld",
+  "contract_address": "0xeEfca6ffd18CCbd3Ee43D4bDFdD5CCbf69A62be8",
+  "deployment_tx_hash": "0xde309afcaf688c182059dc32f9e6829a9b63fa2f800a639fd98319342003f03a",
+  "explorer_contract_url": "https://explorer-studio.genlayer.com/address/0xeEfca6ffd18CCbd3Ee43D4bDFdD5CCbf69A62be8",
+  "explorer_deploy_tx_url": "https://explorer-studio.genlayer.com/tx/0xde309afcaf688c182059dc32f9e6829a9b63fa2f800a639fd98319342003f03a",
+  "flagship_session_id": "artemis_accord_prime",
+  "init_session_tx_hash": "0x85ffb69f9deea7705227bd3ef7de40afdce708e3889455df2abfd766ad31db1a",
+  "seal_condition_tx_hash": "0x90c32e564ea051ad57042950f052a0b7f6a9a44859a790fbdf0ec97693c6ed27",
+  "deployer_address": "0xAC529A665aF41de5Cf89BC0a9C9C0c7A60EB5795",
+  "participant_b_address": "0x14729733f00C588384291DfE9Ef2CC7921F87f25",
+  "deployed_at": "2026-10-21T15:29:57Z"
+}
