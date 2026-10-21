@@ -4,6 +4,7 @@
 
 [![GenLayer StudioNet](https://img.shields.io/badge/GenLayer-StudioNet%20(61999)-00f5d4?style=for-the-badge&logo=ethereum)](https://explorer-studio.genlayer.com/address/0xCf6B224440958F0360AbaE1e2b453c0cE24Ea8C2)
 [![Consensus Finalized](https://img.shields.io/badge/Consensus-Finalized%20(Quorum)-10b981?style=for-the-badge)](https://explorer-studio.genlayer.com/tx/0xaa89e2c48ddc1ab710e429b4e5435fa24aca6a10c9c1110607549c3c29240698)
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-genworld--protocol.vercel.app-black?style=for-the-badge&logo=vercel)](https://genworld-protocol.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-3b82f6?style=for-the-badge)](LICENSE)
 
 ---
@@ -12,6 +13,8 @@
 
 The canonical **GenWorld** intelligent contract is deployed and actively verified on GenLayer StudioNet:
 
+- **Live Production dApp:** [https://genworld-protocol.vercel.app](https://genworld-protocol.vercel.app)
+- **GitHub Repository:** [https://github.com/Dark-Brain07/GenWorld](https://github.com/Dark-Brain07/GenWorld)
 - **Network:** GenLayer StudioNet (Stable)
 - **Chain ID:** `61999`
 - **Contract Name:** `GenWorld`
@@ -21,7 +24,6 @@ The canonical **GenWorld** intelligent contract is deployed and actively verifie
 - **Flagship Condition Seal Tx:** [`0x78c4f8d38587f7a320b239b26ca8b899456073251cd4a830a1cfa9ce6bb5651b`](https://explorer-studio.genlayer.com/tx/0x78c4f8d38587f7a320b239b26ca8b899456073251cd4a830a1cfa9ce6bb5651b)
 - **Frontend Live Session Creation Tx (`genlayer-js`):** [`0x5b360155ecc82e51cd2fdfd8b031b91ccf44938808067b9f057fdde6dacfd320`](https://explorer-studio.genlayer.com/tx/0x5b360155ecc82e51cd2fdfd8b031b91ccf44938808067b9f057fdde6dacfd320)
 - **Frontend Live Condition Seal Tx (`genlayer-js`):** [`0x4e9c3f6a243c7306521f3dca44a32bd41bfee909446557db542217e71c0314b9`](https://explorer-studio.genlayer.com/tx/0x4e9c3f6a243c7306521f3dca44a32bd41bfee909446557db542217e71c0314b9)
-- **GitHub Repository:** [https://github.com/Dark-Brain07/GenWorld](https://github.com/Dark-Brain07/GenWorld)
 - **Detailed Live Proof Log:** [`docs/live-proof.md`](docs/live-proof.md)
 
 ---

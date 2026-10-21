@@ -27,9 +27,13 @@ export const Navbar: React.FC<NavbarProps> = ({ accountAddress }) => {
         
         {/* Brand */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#00f5d4] to-[#3b82f6] p-[1.5px] flex items-center justify-center shadow-lg shadow-[#00f5d4]/20">
-            <div className="w-full h-full bg-[#07090e] rounded-[10px] flex items-center justify-center">
-              <Globe className="w-5 h-5 text-[#00f5d4]" />
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-[#00f5d4] via-[#7928ca] to-[#3b82f6] p-[1.5px] flex items-center justify-center shadow-lg shadow-[#00f5d4]/20 group">
+            <div className="w-full h-full bg-[#07090e] rounded-[10px] flex items-center justify-center overflow-hidden">
+              <img
+                src="/logo_transparent.png"
+                alt="GenWorld Pixel Emblem"
+                className="w-8 h-8 object-contain hover:scale-110 transition-transform duration-300"
+              />
             </div>
           </div>
           <div>
