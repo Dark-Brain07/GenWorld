@@ -48,27 +48,60 @@ export type TxUpdateCallback = (result: LiveTxResult) => void;
 
 class GenWorldService {
   private client: any;
-  private account: any;
+  private sessionAccount: any;
+  private activeAddress: string;
+  private walletMode: 'browser' | 'session' = 'session';
 
   constructor() {
-    this.account = getSessionAccount();
-    this.client = createClient({
-      chain: studionet,
-      account: this.account,
-    });
+    this.sessionAccount = getSessionAccount();
+    this.activeAddress = this.sessionAccount.address;
+    this.initClient();
+  }
+
+  private initClient(browserAddress?: string | null) {
+    if (this.walletMode === 'browser' && browserAddress && typeof window !== 'undefined' && (window as any).ethereum) {
+      this.activeAddress = browserAddress;
+      this.client = createClient({
+        chain: studionet,
+        account: browserAddress as `0x${string}`,
+        provider: (window as any).ethereum,
+      });
+    } else {
+      this.activeAddress = this.sessionAccount.address;
+      this.client = createClient({
+        chain: studionet,
+        account: this.sessionAccount,
+      });
+    }
+  }
+
+  public setWalletMode(mode: 'browser' | 'session', browserAddress?: string | null) {
+    this.walletMode = mode;
+    this.initClient(browserAddress);
+  }
+
+  public getWalletMode(): 'browser' | 'session' {
+    return this.walletMode;
+  }
+
+  public getActiveAddress(): string {
+    return this.activeAddress;
   }
 
   public getSessionAddress(): string {
-    return this.account.address;
+    return this.sessionAccount.address;
   }
 
   public setCustomPrivateKey(key: string) {
     const formatted = (key.startsWith('0x') ? key : `0x${key}`) as `0x${string}`;
-    this.account = createAccount(formatted);
-    this.client = createClient({
-      chain: studionet,
-      account: this.account,
-    });
+    this.sessionAccount = createAccount(formatted);
+    if (this.walletMode === 'session') {
+      this.activeAddress = this.sessionAccount.address;
+      this.client = createClient({
+        chain: studionet,
+        account: this.sessionAccount,
+      });
+    }
     if (typeof window !== 'undefined') {
       localStorage.setItem('genworld_session_signer_key', formatted);
     }

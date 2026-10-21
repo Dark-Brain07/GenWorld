@@ -8,12 +8,22 @@ import { ConflictDiagnosis } from './components/ConflictDiagnosis';
 import { ApprovalVault } from './components/ApprovalVault';
 import { TransactionModal } from './components/TransactionModal';
 import { genworldService } from './services/genworldService';
+import { walletService, WalletState } from './services/walletService';
 import { WorldSession, TransactionLifecycleState } from './types/genworld';
 import { GENWORLD_CONFIG } from './config/genlayer';
 import { Search, RefreshCw, ExternalLink, Plus, Terminal } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [currentAccount, setCurrentAccount] = useState<string>('');
+  const [walletMode, setWalletMode] = useState<'browser' | 'session'>('session');
+  const [walletState, setWalletState] = useState<WalletState>({
+    address: null,
+    chainId: null,
+    isConnected: false,
+    isCorrectNetwork: false,
+  });
+  const [isConnectingWallet, setIsConnectingWallet] = useState<boolean>(false);
+
   const [activeSessionId, setActiveSessionId] = useState<string>(GENWORLD_CONFIG.defaultSessionId);
   const [session, setSession] = useState<WorldSession | null>(null);
   const [sessionList, setSessionList] = useState<string[]>([]);
@@ -29,11 +39,23 @@ export const App: React.FC = () => {
   });
 
   useEffect(() => {
-    const addr = genworldService.getSessionAddress();
-    setCurrentAccount(addr);
+    const unsub = walletService.subscribe((state) => {
+      setWalletState(state);
+      if (walletMode === 'browser' && state.address) {
+        setCurrentAccount(state.address);
+        genworldService.setWalletMode('browser', state.address);
+      } else {
+        const sessionAddr = genworldService.getSessionAddress();
+        setCurrentAccount(sessionAddr);
+        genworldService.setWalletMode('session');
+      }
+    });
+
     loadSessionsList();
     loadSession(GENWORLD_CONFIG.defaultSessionId);
-  }, []);
+
+    return () => unsub();
+  }, [walletMode]);
 
   const loadSessionsList = async () => {
     const list = await genworldService.listSessions(0, 20);
@@ -105,12 +127,68 @@ export const App: React.FC = () => {
     loadSession(session.id);
   };
 
+  const handleConnectBrowserWallet = async () => {
+    setIsConnectingWallet(true);
+    try {
+      const addr = await walletService.connect();
+      setWalletMode('browser');
+      setCurrentAccount(addr);
+      genworldService.setWalletMode('browser', addr);
+    } catch (err: any) {
+      alert(err?.message || 'Failed to connect browser wallet.');
+    } finally {
+      setIsConnectingWallet(false);
+    }
+  };
+
+  const handleDisconnectBrowserWallet = () => {
+    walletService.disconnect();
+    setWalletMode('session');
+    const sessionAddr = genworldService.getSessionAddress();
+    setCurrentAccount(sessionAddr);
+    genworldService.setWalletMode('session');
+  };
+
+  const handleSwitchToStudioNet = async () => {
+    try {
+      await walletService.switchToStudioNet();
+    } catch (err: any) {
+      alert(err?.message || 'Failed to switch network in wallet.');
+    }
+  };
+
+  const handleToggleWalletMode = (mode: 'browser' | 'session') => {
+    setWalletMode(mode);
+    if (mode === 'browser') {
+      if (walletState.address) {
+        setCurrentAccount(walletState.address);
+        genworldService.setWalletMode('browser', walletState.address);
+      } else {
+        handleConnectBrowserWallet();
+      }
+    } else {
+      const sessionAddr = genworldService.getSessionAddress();
+      setCurrentAccount(sessionAddr);
+      genworldService.setWalletMode('session');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] text-white flex flex-col justify-between">
       
       {/* Navigation */}
       <div>
-        <Navbar accountAddress={currentAccount} />
+        <Navbar
+          accountAddress={currentAccount}
+          walletMode={walletMode}
+          browserAddress={walletState.address}
+          isConnecting={isConnectingWallet}
+          isCorrectNetwork={walletState.isCorrectNetwork}
+          onConnectBrowserWallet={handleConnectBrowserWallet}
+          onDisconnectBrowserWallet={handleDisconnectBrowserWallet}
+          onSwitchToStudioNet={handleSwitchToStudioNet}
+          onToggleWalletMode={handleToggleWalletMode}
+        />
 
         {/* Main Content Area */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

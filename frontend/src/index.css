@@ -233,3 +233,12 @@ input:focus, textarea:focus, select:focus {
 .pulse-glow {
   animation: pulseGlow 3s infinite ease-in-out;
 }
+
+.nav-logo-img {
+  width: 32px !important;
+  height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
