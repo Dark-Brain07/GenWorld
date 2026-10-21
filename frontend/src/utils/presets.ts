@@ -18,8 +18,8 @@ export const SCENARIO_PRESETS: ScenarioPreset[] = [
     badge: "Planetary Settlement",
     description: "Multilateral life-support & power architecture agreement between Lunar Operations and Planetary Science Directorate.",
     defaultRoster: [
-      "0xAC529A665aF41de5Cf89BC0a9C9C0c7A60EB5795",
-      "0x89D24A6b4CcB1B6fAA2625fE562bDD9a23260359"
+      "0x30A9Dd04dE4BE992a449fD8c8d03A50c76a56A93",
+      "0xfebac9549221d26a1a94b89b80bd07a59500f974"
     ],
     domain: [
       {

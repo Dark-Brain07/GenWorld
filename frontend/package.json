@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:live": "node test_frontend_genlayer_js.mjs"
   },
   "dependencies": {
     "genlayer-js": "^1.1.8",

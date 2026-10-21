@@ -2,23 +2,25 @@
 
 **Decentralized Semantic Constraint Negotiation & Multi-Stakeholder Plan Alignment Protocol on GenLayer**
 
-[![GenLayer StudioNet](https://img.shields.io/badge/GenLayer-StudioNet%20(61999)-00f5d4?style=for-the-badge&logo=ethereum)](https://explorer-studio.genlayer.com/address/0xeEfca6ffd18CCbd3Ee43D4bDFdD5CCbf69A62be8)
-[![Consensus Finalized](https://img.shields.io/badge/Consensus-Finalized%20(Quorum)-10b981?style=for-the-badge)](https://explorer-studio.genlayer.com/tx/0xde309afcaf688c182059dc32f9e6829a9b63fa2f800a639fd98319342003f03a)
+[![GenLayer StudioNet](https://img.shields.io/badge/GenLayer-StudioNet%20(61999)-00f5d4?style=for-the-badge&logo=ethereum)](https://explorer-studio.genlayer.com/address/0xCf6B224440958F0360AbaE1e2b453c0cE24Ea8C2)
+[![Consensus Finalized](https://img.shields.io/badge/Consensus-Finalized%20(Quorum)-10b981?style=for-the-badge)](https://explorer-studio.genlayer.com/tx/0xaa89e2c48ddc1ab710e429b4e5435fa24aca6a10c9c1110607549c3c29240698)
 [![License: MIT](https://img.shields.io/badge/License-MIT-3b82f6?style=for-the-badge)](LICENSE)
 
 ---
 
-## 1. Verified Live On-Chain Deployment
+## 1. Verified Live On-Chain Deployment & Transactions
 
 The canonical **GenWorld** intelligent contract is deployed and actively verified on GenLayer StudioNet:
 
 - **Network:** GenLayer StudioNet (Stable)
 - **Chain ID:** `61999`
 - **Contract Name:** `GenWorld`
-- **Contract Address:** [`0xeEfca6ffd18CCbd3Ee43D4bDFdD5CCbf69A62be8`](https://explorer-studio.genlayer.com/address/0xeEfca6ffd18CCbd3Ee43D4bDFdD5CCbf69A62be8)
-- **Deployment Transaction Hash:** [`0xde309afcaf688c182059dc32f9e6829a9b63fa2f800a639fd98319342003f03a`](https://explorer-studio.genlayer.com/tx/0xde309afcaf688c182059dc32f9e6829a9b63fa2f800a639fd98319342003f03a)
-- **Flagship Session Creation Tx:** [`0x85ffb69f9deea7705227bd3ef7de40afdce708e3889455df2abfd766ad31db1a`](https://explorer-studio.genlayer.com/tx/0x85ffb69f9deea7705227bd3ef7de40afdce708e3889455df2abfd766ad31db1a)
-- **Flagship Condition Seal Tx:** [`0x90c32e564ea051ad57042950f052a0b7f6a9a44859a790fbdf0ec97693c6ed27`](https://explorer-studio.genlayer.com/tx/0x90c32e564ea051ad57042950f052a0b7f6a9a44859a790fbdf0ec97693c6ed27)
+- **Contract Address:** [`0xCf6B224440958F0360AbaE1e2b453c0cE24Ea8C2`](https://explorer-studio.genlayer.com/address/0xCf6B224440958F0360AbaE1e2b453c0cE24Ea8C2)
+- **Deployment Transaction Hash:** [`0xaa89e2c48ddc1ab710e429b4e5435fa24aca6a10c9c1110607549c3c29240698`](https://explorer-studio.genlayer.com/tx/0xaa89e2c48ddc1ab710e429b4e5435fa24aca6a10c9c1110607549c3c29240698)
+- **Flagship Session Creation Tx:** [`0x2ef9afea9b19db138c071245176d2db367a784c2ed9b28c07af1cd125203d46c`](https://explorer-studio.genlayer.com/tx/0x2ef9afea9b19db138c071245176d2db367a784c2ed9b28c07af1cd125203d46c)
+- **Flagship Condition Seal Tx:** [`0x78c4f8d38587f7a320b239b26ca8b899456073251cd4a830a1cfa9ce6bb5651b`](https://explorer-studio.genlayer.com/tx/0x78c4f8d38587f7a320b239b26ca8b899456073251cd4a830a1cfa9ce6bb5651b)
+- **Frontend Live Session Creation Tx (`genlayer-js`):** [`0x5b360155ecc82e51cd2fdfd8b031b91ccf44938808067b9f057fdde6dacfd320`](https://explorer-studio.genlayer.com/tx/0x5b360155ecc82e51cd2fdfd8b031b91ccf44938808067b9f057fdde6dacfd320)
+- **Frontend Live Condition Seal Tx (`genlayer-js`):** [`0x4e9c3f6a243c7306521f3dca44a32bd41bfee909446557db542217e71c0314b9`](https://explorer-studio.genlayer.com/tx/0x4e9c3f6a243c7306521f3dca44a32bd41bfee909446557db542217e71c0314b9)
 - **Detailed Live Proof Log:** [`docs/live-proof.md`](docs/live-proof.md)
 
 ---
@@ -131,9 +133,9 @@ Output:
 
 ### Run Direct-Mode In-Memory Tests
 ```bash
-python -m pytest tests/test_direct_genworld.py -v
+python -m pytest tests/ -v
 ```
-All 7 unit tests pass in 0.33s covering protocol configuration, session initialization, roster bounds, condition sealing, lifecycle transitions, and the SAT/MUS conflict solver.
+All 9 direct lifecycle unit tests pass in 0.41s covering protocol configuration, session initialization, roster bounds, condition sealing, cancellation, SAT/MUS conflict solver, full affirmative lifecycle (feasible to committed), and full conflict resolution lifecycle (blocked -> waive -> committed).
 
 ---
 
@@ -162,7 +164,7 @@ npm run dev
 - [x] **Zero-Revert Fallback Audit:** Handled through comprehensive parameter validation, safe error bounds, and explicit `gl.vm.UserError` responses.
 - [x] **Consensus & Equivalence Principle Audit:** Differential validator rerun using `gl.vm.run_nondet_unsafe` verifying boolean truth masks across all candidate worlds in the frozen discrete domain.
 - [x] **Syntax, AST & Lint Audit:** Zero Python syntax errors and 100% pass on `genvm_linter.cli check`.
-- [x] **Live Frontend & Chain Execution Audit:** Deployed to StudioNet (`0xeEfca6ffd18CCbd3Ee43D4bDFdD5CCbf69A62be8`), live transactions executed and finalized, documented in `docs/live-proof.md`.
+- [x] **Live Frontend & Chain Execution Audit:** Deployed to StudioNet (`0xCf6B224440958F0360AbaE1e2b453c0cE24Ea8C2`), live transactions executed and finalized, documented in `docs/live-proof.md`.
 
 ---
 

@@ -13,10 +13,10 @@ All transactions were mined and verified through GenLayer's decentralized AI-val
 | **Contract Name** | `GenWorld` |
 | **Network** | GenLayer StudioNet |
 | **Chain ID** | `61999` |
-| **Contract Address** | `0xeEfca6ffd18CCbd3Ee43D4bDFdD5CCbf69A62be8` |
-| **Explorer Address URL** | [https://explorer-studio.genlayer.com/address/0xeEfca6ffd18CCbd3Ee43D4bDFdD5CCbf69A62be8](https://explorer-studio.genlayer.com/address/0xeEfca6ffd18CCbd3Ee43D4bDFdD5CCbf69A62be8) |
-| **Deployment Tx Hash** | `0xde309afcaf688c182059dc32f9e6829a9b63fa2f800a639fd98319342003f03a` |
-| **Explorer Deploy Tx URL** | [https://explorer-studio.genlayer.com/tx/0xde309afcaf688c182059dc32f9e6829a9b63fa2f800a639fd98319342003f03a](https://explorer-studio.genlayer.com/tx/0xde309afcaf688c182059dc32f9e6829a9b63fa2f800a639fd98319342003f03a) |
+| **Contract Address** | `0xCf6B224440958F0360AbaE1e2b453c0cE24Ea8C2` |
+| **Explorer Address URL** | [https://explorer-studio.genlayer.com/address/0xCf6B224440958F0360AbaE1e2b453c0cE24Ea8C2](https://explorer-studio.genlayer.com/address/0xCf6B224440958F0360AbaE1e2b453c0cE24Ea8C2) |
+| **Deployment Tx Hash** | `0xaa89e2c48ddc1ab710e429b4e5435fa24aca6a10c9c1110607549c3c29240698` |
+| **Explorer Deploy Tx URL** | [https://explorer-studio.genlayer.com/tx/0xaa89e2c48ddc1ab710e429b4e5435fa24aca6a10c9c1110607549c3c29240698](https://explorer-studio.genlayer.com/tx/0xaa89e2c48ddc1ab710e429b4e5435fa24aca6a10c9c1110607549c3c29240698) |
 | **Consensus Status** | `FINALIZED` |
 | **Runner Dependency** | `py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6` |
 
@@ -26,16 +26,16 @@ All transactions were mined and verified through GenLayer's decentralized AI-val
 
 ### A. Contract Deployment
 - **Method:** `deploy_contract`
-- **Transaction Hash:** `0xde309afcaf688c182059dc32f9e6829a9b63fa2f800a639fd98319342003f03a`
-- **Explorer Link:** [View Deployment Receipt](https://explorer-studio.genlayer.com/tx/0xde309afcaf688c182059dc32f9e6829a9b63fa2f800a639fd98319342003f03a)
+- **Transaction Hash:** `0xaa89e2c48ddc1ab710e429b4e5435fa24aca6a10c9c1110607549c3c29240698`
+- **Explorer Link:** [View Deployment Receipt](https://explorer-studio.genlayer.com/tx/0xaa89e2c48ddc1ab710e429b4e5435fa24aca6a10c9c1110607549c3c29240698)
 - **Status:** `FINALIZED`
-- **Result:** Contract successfully instantiated at `0xeEfca6ffd18CCbd3Ee43D4bDFdD5CCbf69A62be8`.
+- **Result:** Contract successfully instantiated at `0xCf6B224440958F0360AbaE1e2b453c0cE24Ea8C2`.
 
 ### B. Flagship Session Initialization (`create_session`)
 - **Method:** `create_session(session_id, participants, domain_json)`
 - **Arguments:**
   - `session_id`: `"artemis_accord_prime"`
-  - `participants`: `["0xAC529A665aF41de5Cf89BC0a9C9C0c7A60EB5795", "0x14729733f00C588384291DfE9Ef2CC7921F87f25"]`
+  - `participants`: `["0x30A9Dd04dE4BE992a449fD8c8d03A50c76a56A93", "0xfebac9549221d26a1a94b89b80bd07a59500f974"]`
   - `domain_json`:
     ```json
     [
@@ -44,8 +44,8 @@ All transactions were mined and verified through GenLayer's decentralized AI-val
       {"id": "ai_governance", "meaning": "Degree of autonomous agent oversight", "values": ["advisory", "autonomous"]}
     ]
     ```
-- **Transaction Hash:** `0x85ffb69f9deea7705227bd3ef7de40afdce708e3889455df2abfd766ad31db1a`
-- **Explorer Link:** [View Session Creation Receipt](https://explorer-studio.genlayer.com/tx/0x85ffb69f9deea7705227bd3ef7de40afdce708e3889455df2abfd766ad31db1a)
+- **Transaction Hash:** `0x2ef9afea9b19db138c071245176d2db367a784c2ed9b28c07af1cd125203d46c`
+- **Explorer Link:** [View Session Creation Receipt](https://explorer-studio.genlayer.com/tx/0x2ef9afea9b19db138c071245176d2db367a784c2ed9b28c07af1cd125203d46c)
 - **Consensus Status:** `FINALIZED`
 
 ### C. Stakeholder Condition Sealing (`seal_conditions`)
@@ -53,10 +53,30 @@ All transactions were mined and verified through GenLayer's decentralized AI-val
 - **Arguments:**
   - `session_id`: `"artemis_accord_prime"`
   - `conditions`: `["Power source must be nuclear or fusion for baseload radiation shield safety."]`
-- **Caller Address:** `0xAC529A665aF41de5Cf89BC0a9C9C0c7A60EB5795`
-- **Transaction Hash:** `0x90c32e564ea051ad57042950f052a0b7f6a9a44859a790fbdf0ec97693c6ed27`
-- **Explorer Link:** [View Condition Seal Receipt](https://explorer-studio.genlayer.com/tx/0x90c32e564ea051ad57042950f052a0b7f6a9a44859a790fbdf0ec97693c6ed27)
+- **Caller Address:** `0x30A9Dd04dE4BE992a449fD8c8d03A50c76a56A93`
+- **Transaction Hash:** `0x78c4f8d38587f7a320b239b26ca8b899456073251cd4a830a1cfa9ce6bb5651b`
+- **Explorer Link:** [View Condition Seal Receipt](https://explorer-studio.genlayer.com/tx/0x78c4f8d38587f7a320b239b26ca8b899456073251cd4a830a1cfa9ce6bb5651b)
 - **Consensus Status:** `FINALIZED`
+
+### D. Frontend Live Transaction Execution via `genlayer-js`
+Direct client integration test using `createClient`, `studionet` chain, and `writeContract`:
+
+1. **Frontend Session Creation:**
+   - **Method:** `create_session(session_id, participants, domain_json)`
+   - **Session ID:** `frontend_live_mviai6su`
+   - **Signer (Frontend User):** `0xf808077717e28D37DaE43961863dC8BA889bcD45`
+   - **Counterparty:** `0xCfDFb7C55b55f89652e9d80c4991c6e378a097C3`
+   - **Transaction Hash:** `0x5b360155ecc82e51cd2fdfd8b031b91ccf44938808067b9f057fdde6dacfd320`
+   - **Explorer Link:** [View Frontend Create Session Tx](https://explorer-studio.genlayer.com/tx/0x5b360155ecc82e51cd2fdfd8b031b91ccf44938808067b9f057fdde6dacfd320)
+   - **Consensus Status:** `FINALIZED`
+
+2. **Frontend Condition Sealing:**
+   - **Method:** `seal_conditions(session_id, conditions)`
+   - **Session ID:** `frontend_live_mviai6su`
+   - **Conditions:** `["Frequency standard must be 60 Hz to match turbine generators."]`
+   - **Transaction Hash:** `0x4e9c3f6a243c7306521f3dca44a32bd41bfee909446557db542217e71c0314b9`
+   - **Explorer Link:** [View Frontend Seal Condition Tx](https://explorer-studio.genlayer.com/tx/0x4e9c3f6a243c7306521f3dca44a32bd41bfee909446557db542217e71c0314b9)
+   - **Consensus Status:** `FINALIZED`
 
 ---
 
@@ -71,8 +91,8 @@ Direct read query on `get_session("artemis_accord_prime")` returned the verified
   "status": "COLLECTING",
   "revision": 0,
   "roster": [
-    "0xac529a665af41de5cf89bc0a9c9c0c7a60eb5795",
-    "0x14729733f00c588384291dfe9ef2cc7921f87f25"
+    "0x30a9dd04de4be992a449fd8c8d03a50c76a56a93",
+    "0xfebac9549221d26a1a94b89b80bd07a59500f974"
   ],
   "domain": [
     {
@@ -92,7 +112,7 @@ Direct read query on `get_session("artemis_accord_prime")` returned the verified
     }
   ],
   "sealed": {
-    "0xac529a665af41de5cf89bc0a9c9c0c7a60eb5795": [
+    "0x30a9dd04de4be992a449fd8c8d03a50c76a56a93": [
       "Power source must be nuclear or fusion for baseload radiation shield safety."
     ]
   },
