@@ -331,12 +331,15 @@ def _build_ai_prompt(session_snapshot: dict) -> str:
     return AI_COMPILER_SYSTEM_PROMPT + "\nSEALED_STAKEHOLDER_SOURCE:\n" + _canonical_json(source_data)
 
 
-def _parse_ai_compilation(session_snapshot: dict, raw_json_str: str) -> list:
+def _parse_ai_compilation(session_snapshot: dict, raw_json_data) -> list:
     """Validate AI compiler output structure and compute boolean truth masks."""
-    try:
-        parsed = json.loads(raw_json_str)
-    except Exception as exc:
-        raise gl.vm.UserError(f"INVALID_COMPILATION_JSON: {exc}")
+    if isinstance(raw_json_data, dict):
+        parsed = raw_json_data
+    else:
+        try:
+            parsed = json.loads(raw_json_data)
+        except Exception as exc:
+            raise gl.vm.UserError(f"INVALID_COMPILATION_JSON: {exc}")
 
     if not isinstance(parsed, dict) or set(parsed.keys()) != {"input_hash", "rules"}:
         raise gl.vm.UserError("COMPILATION_TOP_LEVEL_KEYS_INVALID")
@@ -562,7 +565,8 @@ class GenWorld(gl.Contract):
             try:
                 # Validate compilation AST structure deterministically
                 _parse_ai_compilation(json.loads(snapshot_json), raw_response)
-                return _canonical_json(json.loads(raw_response))
+                raw_dict = json.loads(raw_response) if isinstance(raw_response, str) else raw_response
+                return _canonical_json(raw_dict)
             except Exception as e:
                 raise gl.vm.UserError(f"LEADER_COMPILATION_ERROR: {e}")
 

@@ -244,3 +244,168 @@ def _diagnose_feasibility(clause_masks: list, world_count: int) -> dict:
     assert set(res_blocked["minimal_cores"][0]["members"]) == {0, 1}
     assert len(res_blocked["minimal_corrections"]) == 2
 
+
+# ==============================================================================
+# 5. Full End-to-End Lifecycle Tests (GenVM Consensus, Diagnosis, Waiver, Commit)
+# ==============================================================================
+
+def test_full_lifecycle_feasible_to_committed(direct_vm, direct_deploy, direct_alice, direct_bob):
+    contract = direct_deploy(CONTRACT_PATH)
+    direct_vm.sender = direct_alice
+
+    session_id = "artemis_accord_lifecycle"
+    participants = [direct_alice, direct_bob]
+    contract.create_session(session_id, participants, json.dumps(SAMPLE_DOMAIN))
+
+    # Phase 1: Sealing
+    contract.seal_conditions(session_id, ["Must use nuclear power."])
+    direct_vm.sender = direct_bob
+    contract.seal_conditions(session_id, ["Must reserve 60 days of water."])
+
+    state = json.loads(contract.get_session(session_id))
+    assert state["status"] == "AWAITING_COMPILATION"
+    input_hash = state["input_hash"]
+
+    # Phase 2: Mock AI Consensus compilation
+    mock_compilation = {
+        "input_hash": input_hash,
+        "rules": [
+            {
+                "clause_id": "C0",
+                "status": "COMPILED",
+                "expr": {
+                    "op": "eq",
+                    "left": {"var": "power_source"},
+                    "right": {"lit": "nuclear"}
+                }
+            },
+            {
+                "clause_id": "C1",
+                "status": "COMPILED",
+                "expr": {
+                    "op": "eq",
+                    "left": {"var": "water_reserve_days"},
+                    "right": {"lit": 60}
+                }
+            }
+        ]
+    }
+
+    direct_vm.mock_llm(r".*GENWORLD-COMPILE-V1.*", json.dumps(mock_compilation))
+
+    # Phase 3: Consensus Execution
+    direct_vm.sender = direct_alice
+    contract.compile_session(session_id)
+
+    state = json.loads(contract.get_session(session_id))
+    assert state["status"] == "FEASIBLE"
+    assert len(state["diagnosis"]["world_ids"]) > 0
+
+    feasible_world_ids = state["diagnosis"]["world_ids"]
+    chosen_world = feasible_world_ids[0]
+
+    # Phase 4: Unanimous Multi-Party Approval
+    expected_hash = contract.get_state_hash(session_id)
+
+    # Alice votes
+    direct_vm.sender = direct_alice
+    contract.approve_plan(session_id, chosen_world, expected_hash)
+
+    state = json.loads(contract.get_session(session_id))
+    assert state["status"] == "FEASIBLE"
+    assert len(state["approvals"]) == 1
+
+    # Bob votes for the exact same world
+    direct_vm.sender = direct_bob
+    contract.approve_plan(session_id, chosen_world, expected_hash)
+
+    # Phase 5: Permanent State Commitment
+    state = json.loads(contract.get_session(session_id))
+    assert state["status"] == "COMMITTED"
+    assert state["committed"] is not None
+    assert state["committed"]["world_id"] == chosen_world
+    assert state["committed"]["plan"]["power_source"] == "nuclear"
+    assert state["committed"]["plan"]["water_reserve_days"] == 60
+
+
+def test_full_lifecycle_blocked_waive_to_committed(direct_vm, direct_deploy, direct_alice, direct_bob):
+    contract = direct_deploy(CONTRACT_PATH)
+    direct_vm.sender = direct_alice
+
+    session_id = "conflict_accord_lifecycle"
+    participants = [direct_alice, direct_bob]
+    contract.create_session(session_id, participants, json.dumps(SAMPLE_DOMAIN))
+
+    # Phase 1: Submit contradictory conditions
+    contract.seal_conditions(session_id, ["Must use solar power exclusively."])
+    direct_vm.sender = direct_bob
+    contract.seal_conditions(session_id, ["Must use nuclear power exclusively."])
+
+    state = json.loads(contract.get_session(session_id))
+    input_hash = state["input_hash"]
+
+    # Phase 2: Mock compilation with mutually exclusive predicates
+    mock_compilation = {
+        "input_hash": input_hash,
+        "rules": [
+            {
+                "clause_id": "C0",
+                "status": "COMPILED",
+                "expr": {
+                    "op": "eq",
+                    "left": {"var": "power_source"},
+                    "right": {"lit": "solar"}
+                }
+            },
+            {
+                "clause_id": "C1",
+                "status": "COMPILED",
+                "expr": {
+                    "op": "eq",
+                    "left": {"var": "power_source"},
+                    "right": {"lit": "nuclear"}
+                }
+            }
+        ]
+    }
+
+    direct_vm.mock_llm(r".*GENWORLD-COMPILE-V1.*", json.dumps(mock_compilation))
+
+    direct_vm.sender = direct_alice
+    contract.compile_session(session_id)
+
+    # Phase 3: Mathematical Conflict Diagnosis
+    state = json.loads(contract.get_session(session_id))
+    assert state["status"] == "BLOCKED"
+    assert state["diagnosis"]["feasible_mask"] == 0
+    assert len(state["diagnosis"]["minimal_cores"]) == 1
+    assert set(state["diagnosis"]["minimal_cores"][0]["members"]) == {0, 1}
+
+    # Phase 4: Bob waives his contradictory clause (C1)
+    expected_hash = contract.get_state_hash(session_id)
+    direct_vm.sender = direct_bob
+    contract.waive_condition(session_id, "C1", expected_hash)
+
+    # Feasibility restored!
+    state = json.loads(contract.get_session(session_id))
+    assert state["status"] == "FEASIBLE"
+    assert state["revision"] == 1
+    assert len(state["diagnosis"]["world_ids"]) > 0
+
+    # Phase 5: Both approve a candidate world satisfying the remaining active condition (solar)
+    chosen_world = state["diagnosis"]["world_ids"][0]
+    expected_hash_r1 = contract.get_state_hash(session_id)
+
+    direct_vm.sender = direct_alice
+    contract.approve_plan(session_id, chosen_world, expected_hash_r1)
+
+    direct_vm.sender = direct_bob
+    contract.approve_plan(session_id, chosen_world, expected_hash_r1)
+
+    state = json.loads(contract.get_session(session_id))
+    assert state["status"] == "COMMITTED"
+    assert state["committed"]["world_id"] == chosen_world
+    assert state["committed"]["plan"]["power_source"] == "solar"
+    assert state["committed"]["revision"] == 1
+
+
