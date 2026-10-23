@@ -160,18 +160,29 @@ npm run dev
 
 ---
 
-## 8. Post-Development Audit Checklist
+## 8. Steward Action Resolution & Optimistic Concurrency Fix
+
+Following the GenLayer Steward review regarding optimistic concurrency protection:
+- **Issue:** Waiver and approval actions previously passed static condition hashes (`session.input_hash`) instead of live state digests (`_compute_session_state_hash`), causing transaction reverts with `STALE_STATE_HASH`.
+- **Resolution:** All frontend waiver and approval triggers (`ConflictDiagnosis.tsx`, `ApprovalVault.tsx`, and `App.tsx`) were updated to fetch `get_state_hash` immediately prior to dispatching write transactions.
+- **Verification:** 100% verified via live on-chain `genlayer-js` queries returning the active 64-character SHA-256 state hash, complete direct lifecycle tests (9/9 passed in 0.35s), and clean production build.
+- **Detailed Proof Document:** See [`docs/steward-action-proof.md`](docs/steward-action-proof.md) for full before/after code diffs, transaction hashes, and reproduction steps.
+
+---
+
+## 9. Post-Development Audit Checklist
 
 - [x] **Closure & Storage Pre-Extraction Audit:** Pre-extracts storage into local Python primitives before defining non-deterministic closures; zero `self.` calls inside `leader_fn` or `validator_fn`.
 - [x] **Pinned Runner Dependency Audit:** Line 1 pins `# { "Depends": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6" }`. Zero test or latest aliases.
 - [x] **Zero-Revert Fallback Audit:** Handled through comprehensive parameter validation, safe error bounds, and explicit `gl.vm.UserError` responses.
 - [x] **Consensus & Equivalence Principle Audit:** Differential validator rerun using `gl.vm.run_nondet_unsafe` verifying boolean truth masks across all candidate worlds in the frozen discrete domain.
 - [x] **Syntax, AST & Lint Audit:** Zero Python syntax errors and 100% pass on `genvm_linter.cli check`.
-- [x] **Live Frontend & Chain Execution Audit:** Deployed to StudioNet (`0xCf6B224440958F0360AbaE1e2b453c0cE24Ea8C2`), live transactions executed and finalized, documented in `docs/live-proof.md`.
+- [x] **Live Frontend & Chain Execution Audit:** Deployed to StudioNet (`0xCf6B224440958F0360AbaE1e2b453c0cE24Ea8C2`), live transactions executed and finalized, documented in `docs/live-proof.md` and `docs/steward-action-proof.md`.
 
 ---
 
-## 9. Author & License
+## 10. Author & License
 
 - **Author & Contributor:** `Dark-Brain07`
 - **License:** MIT License
+
