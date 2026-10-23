@@ -117,14 +117,19 @@ export const App: React.FC = () => {
 
   const handleApproveWorldFromGrid = async (worldId: number) => {
     if (!session) return;
-    const stateHash = session.committed?.state_hash || session.input_hash || '';
-    await handleRequestTx(
-      'approve_plan',
-      [session.id, worldId, stateHash],
-      `Approve World #${worldId}`,
-      `Submitting stakeholder approval for candidate World #${worldId} on GenLayer StudioNet`
-    );
-    loadSession(session.id);
+    try {
+      // Fetch contract's current state hash immediately before submitting write
+      const stateHash = await genworldService.getStateHash(session.id);
+      await handleRequestTx(
+        'approve_plan',
+        [session.id, worldId, stateHash],
+        `Approve World #${worldId}`,
+        `Submitting stakeholder approval for candidate World #${worldId} on GenLayer StudioNet`
+      );
+      loadSession(session.id);
+    } catch (err) {
+      console.error('Failed to approve world from grid:', err);
+    }
   };
 
   const handleConnectBrowserWallet = async () => {

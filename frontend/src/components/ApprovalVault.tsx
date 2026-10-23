@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Award, CheckCircle2, ShieldCheck, ThumbsUp, Lock } from 'lucide-react';
 import { WorldSession } from '../types/genworld';
+import { genworldService } from '../services/genworldService';
 
 interface ApprovalVaultProps {
   session: WorldSession;
@@ -32,7 +33,8 @@ export const ApprovalVault: React.FC<ApprovalVaultProps> = ({
   const handleApprove = async () => {
     setIsSubmitting(true);
     try {
-      const stateHash = session.committed?.state_hash || session.input_hash || '';
+      // Fetch contract's current state hash immediately before submitting write
+      const stateHash = await genworldService.getStateHash(session.id);
       await onRequestTx(
         'approve_plan',
         [session.id, selectedWorld, stateHash],

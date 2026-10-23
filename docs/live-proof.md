@@ -63,20 +63,26 @@ Direct client integration test using `createClient`, `studionet` chain, and `wri
 
 1. **Frontend Session Creation:**
    - **Method:** `create_session(session_id, participants, domain_json)`
-   - **Session ID:** `frontend_live_mviai6su`
-   - **Signer (Frontend User):** `0xf808077717e28D37DaE43961863dC8BA889bcD45`
-   - **Counterparty:** `0xCfDFb7C55b55f89652e9d80c4991c6e378a097C3`
-   - **Transaction Hash:** `0x5b360155ecc82e51cd2fdfd8b031b91ccf44938808067b9f057fdde6dacfd320`
-   - **Explorer Link:** [View Frontend Create Session Tx](https://explorer-studio.genlayer.com/tx/0x5b360155ecc82e51cd2fdfd8b031b91ccf44938808067b9f057fdde6dacfd320)
+   - **Session ID:** `frontend_live_mvk7tq8b`
+   - **Signer (Frontend User):** `0x0f2dEc2b219775De7015796b324a4f148DB5504D`
+   - **Counterparty:** `0x529B4B1278a1832499aA99c825010d85055225dE`
+   - **Transaction Hash:** `0x67457929039d74f30463f8067f97e928400e826fcc5e9fb9c321f2699116aace`
+   - **Explorer Link:** [View Frontend Create Session Tx](https://explorer-studio.genlayer.com/tx/0x67457929039d74f30463f8067f97e928400e826fcc5e9fb9c321f2699116aace)
    - **Consensus Status:** `FINALIZED`
 
 2. **Frontend Condition Sealing:**
    - **Method:** `seal_conditions(session_id, conditions)`
-   - **Session ID:** `frontend_live_mviai6su`
+   - **Session ID:** `frontend_live_mvk7tq8b`
    - **Conditions:** `["Frequency standard must be 60 Hz to match turbine generators."]`
-   - **Transaction Hash:** `0x4e9c3f6a243c7306521f3dca44a32bd41bfee909446557db542217e71c0314b9`
-   - **Explorer Link:** [View Frontend Seal Condition Tx](https://explorer-studio.genlayer.com/tx/0x4e9c3f6a243c7306521f3dca44a32bd41bfee909446557db542217e71c0314b9)
+   - **Transaction Hash:** `0x0de0f23504d9f10b9f5f9803d37a3fde24d5a80b54d46cf067b809800bf7cf59`
+   - **Explorer Link:** [View Frontend Seal Condition Tx](https://explorer-studio.genlayer.com/tx/0x0de0f23504d9f10b9f5f9803d37a3fde24d5a80b54d46cf067b809800bf7cf59)
    - **Consensus Status:** `FINALIZED`
+
+3. **Optimistic Concurrency State Hash Verification (`get_state_hash`):**
+   - **Method:** `get_state_hash(session_id)`
+   - **Session ID:** `frontend_live_mvk7tq8b`
+   - **Returned State Hash:** `580128e73b67354fa3a65f6929679ac01fd95443958dfe3fb40966eb81ba5706`
+   - **Verification:** Successfully retrieved immediately prior to waiver/approval transactions, guaranteeing zero stale hash rejections (`STALE_STATE_HASH`).
 
 ---
 

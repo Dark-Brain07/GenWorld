@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AlertOctagon, CheckCircle2, RefreshCw, Undo2, Wrench, FileCode2 } from 'lucide-react';
 import { WorldSession } from '../types/genworld';
+import { genworldService } from '../services/genworldService';
 
 interface ConflictDiagnosisProps {
   session: WorldSession;
@@ -37,8 +38,8 @@ export const ConflictDiagnosis: React.FC<ConflictDiagnosisProps> = ({
   const handleWaive = async (clauseId: string) => {
     setWaivingClauseId(clauseId);
     try {
-      // Need current state hash to prevent race conditions
-      const stateHash = session.committed?.state_hash || session.input_hash || '';
+      // Fetch contract's current state hash immediately before submitting write
+      const stateHash = await genworldService.getStateHash(session.id);
       await onRequestTx(
         'waive_condition',
         [session.id, clauseId, stateHash],

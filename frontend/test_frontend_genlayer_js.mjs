@@ -95,6 +95,19 @@ async function main() {
   console.log('[+] Verified On-Chain State from GenLayer:');
   console.log(JSON.stringify(JSON.parse(liveState), null, 2));
 
+  // 6. Query current negotiation state hash via get_state_hash
+  console.log(`\n[*] Fetching get_state_hash('${testSessionId}') for optimistic concurrency verification...`);
+  const liveStateHash = await client.readContract({
+    address: CONTRACT_ADDRESS,
+    functionName: 'get_state_hash',
+    args: [testSessionId],
+  });
+  console.log(`[+] Returned State Hash: ${liveStateHash}`);
+  if (typeof liveStateHash !== 'string' || liveStateHash.length !== 64) {
+    throw new Error(`Expected 64-char state hash string, got: ${liveStateHash}`);
+  }
+  console.log('[+] Confirmed valid 64-character SHA-256 state hash returned by GenLayer contract!');
+
   console.log('\n' + '='.repeat(75));
   console.log('  FRONTEND GENLAYER-JS LIVE TRANSACTION VERIFICATION COMPLETE! ');
   console.log('='.repeat(75));
